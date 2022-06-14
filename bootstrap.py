@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import subprocess
+from subprocess import CalledProcessError
 import sys
 import os
 import argparse
@@ -129,14 +131,29 @@ def set_up_project(dest_path, project_name):
         pyproject_toml_path, r"^name\s*=\s*\"\w\"\s*$", f"name = {project_name}"
     )
 
-    # git init
-
-    # create python virtualenv
-
-    # poetry install
-
-    # pre-commit install
-
+    # script does the following:
+    #   - git init
+    #   - create python virtualenv
+    #   - poetry install
+    #   - pre-commit install
+    bash_path = shutil.which("bash")
+    bootstrap_script_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "bootstrap.sh")
+    )
+    try:
+        subprocess.run(
+            [bash_path, bootstrap_script_path, dest_path],
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+    except CalledProcessError as err:
+        sys.stderr.write(
+            f"{sys.argv[0]}: Error on runnng subprocess with args:\n\t{err.cmd}\n"
+        )
+        sys.stderr.write(f"{sys.argv[0]}: Error: ")
+        if err.stderr:
+            sys.stderr.write(str(err.stderr, encoding="ascii"))
+        sys.exit(err.returncode)
 
 def main():
     args = get_args()

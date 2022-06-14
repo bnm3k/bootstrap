@@ -33,14 +33,14 @@ class BootstrapArgs:
         # get path for template to use
         if not os.path.isdir(self.template_path):
             raise InvalidArgError(
-                f"Invalid template '{self.template}', resolves to path: {self.template_path}\n"
+                f"Invalid template '{self.template}', resolves to path: {self.template_path}"
             )
 
         # get project name
         project_name_pattern = "^[a-z_]+$"
         if not re.match(project_name_pattern, self.project_name):
             raise InvalidArgError(
-                f"Invalid project name '{self.project_name}', should match '{project_name_pattern}'\n"
+                f"Invalid project name '{self.project_name}', should match '{project_name_pattern}'"
             )
 
         # get destination
@@ -48,18 +48,16 @@ class BootstrapArgs:
             if os.path.isdir(self.dest_path):
                 if os.listdir(self.dest_path):
                     raise InvalidArgError(
-                        f"Invalid destination: '{self.dest_path}' is non-empty\n"
+                        f"Invalid destination: '{self.dest_path}' is non-empty"
                     )
             else:
                 raise InvalidArgError(
-                    f"Invalid destination: '{self.dest_path}' exists but is not a directory'\n"
+                    f"Invalid destination: '{self.dest_path}' exists but is not a directory'"
                 )
 
         # dest path cannot be in templates dir
         if self.dest_path.startswith(self.templates_dir):
-            raise InvalidArgError(
-                f"Invalid destination: '{self.templates_dir}/ ... '\n"
-            )
+            raise InvalidArgError(f"Invalid destination: '{self.templates_dir}/ ... '")
 
 
 def get_args() -> BootstrapArgs:

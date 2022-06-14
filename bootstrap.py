@@ -55,15 +55,11 @@ class BootstrapArgs:
                     f"Invalid destination: '{self.dest_path}' exists but is not a directory'\n"
                 )
 
-        # dest dir should not overlap with any of the template dirs
-        # create path to patch against
-        templates = [t for t in os.listdir(self.templates_dir) if os.path.isdir(t)]
-        for template in templates:
-            prefix_path = os.path.join(self.templates_dir, template)
-            if self.dest_path.startswith(prefix_path):
-                raise InvalidArgError(
-                    f"Invalid destination: '{self.dest_path}' should not overlap with '{prefix_path}'\n"
-                )
+        # dest path cannot be in templates dir
+        if self.dest_path.startswith(self.templates_dir):
+            raise InvalidArgError(
+                f"Invalid destination: '{self.templates_dir}/ ... '\n"
+            )
 
 
 def get_args() -> BootstrapArgs:

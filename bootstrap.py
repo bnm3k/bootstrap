@@ -152,7 +152,7 @@ def set_up_project(bootstrap_dir_path, dest_path, project_name):
         )
         sys.stderr.write(f"{sys.argv[0]}: Error: ")
         if err.stderr:
-            sys.stderr.write(str(err.stderr, encoding="ascii"))
+            sys.stderr.write(str(err.stderr, encoding="utf-8"))
         sys.exit(err.returncode)
 
 

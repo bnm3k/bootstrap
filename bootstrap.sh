@@ -15,6 +15,9 @@ _boostrap() {
 
 	cd $dest_dir
 
+	PYENV_VERSION=$(pyenv local)
+	export PYENV_VERSION
+
 	# git init
 	echo "init git repository"
 	git init
@@ -24,6 +27,7 @@ _boostrap() {
 	test -d .venv || python3 -m venv .venv
 
 	# activate virtualenv
+	echo "activate virtualenv"
 	source .venv/bin/activate
 
 	# poetry install
@@ -33,6 +37,8 @@ _boostrap() {
 	# pre-commit install
 	echo "install git hooks via pre-commit"
 	pre-commit install
+
+	unset PYENV_VERSION
 }
 
 _boostrap $1

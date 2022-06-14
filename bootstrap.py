@@ -14,12 +14,12 @@ class InvalidArgError(Exception):
 
 class BootstrapArgs:
     def __init__(self, template: str, project_name: str, destination: str):
+        bootstrap_py_path = os.path.realpath(__file__)
+        self.bootstrap_dir = os.path.dirname(bootstrap_py_path)
         self.project_name = project_name
 
         self.template = template
-        self.templates_dir = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "templates"
-        )
+        self.templates_dir = os.path.join(self.bootstrap_dir, "templates")
         self.template_path = os.path.join(self.templates_dir, template)
 
         self.destination = destination
@@ -100,7 +100,7 @@ def get_args() -> BootstrapArgs:
     )
 
 
-def set_up_project(dest_path, project_name):
+def set_up_project(bootstrap_dir_path, dest_path, project_name):
     # rename project name module
     os.rename(
         os.path.join(dest_path, "project"),
@@ -138,7 +138,7 @@ def set_up_project(dest_path, project_name):
     #   - pre-commit install
     bash_path = shutil.which("bash")
     bootstrap_script_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "bootstrap.sh")
+        os.path.join(bootstrap_dir_path, "bootstrap.sh")
     )
     try:
         subprocess.run(
@@ -155,6 +155,7 @@ def set_up_project(dest_path, project_name):
             sys.stderr.write(str(err.stderr, encoding="ascii"))
         sys.exit(err.returncode)
 
+
 def main():
     args = get_args()
 
@@ -165,7 +166,7 @@ def main():
     shutil.copytree(args.template_path, args.dest_path, dirs_exist_ok=True)
 
     # set up project
-    set_up_project(args.dest_path, args.project_name)
+    set_up_project(args.bootstrap_dir, args.dest_path, args.project_name)
 
 
 if __name__ == "__main__":

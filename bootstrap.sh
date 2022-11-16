@@ -2,7 +2,7 @@
 
 set -e
 
-_boostrap() {
+_boostrap_py() {
 	local dest_dir=$1
 	if [[ -z $dest_dir ]]; then
 		echo >&2 "Invalid arg. Is empty"
@@ -34,11 +34,7 @@ _boostrap() {
 	echo "install dependencies via poetry"
 	poetry install
 
-	# pre-commit install
-	echo "install git hooks via pre-commit"
-	pre-commit install
-
 	unset PYENV_VERSION
 }
 
-_boostrap $1
+_boostrap_py $1

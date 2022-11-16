@@ -7,7 +7,7 @@ PROJECT_NAME:=project
 VENV_DIR:=.venv
 ACTIVATE:=source .venv/bin/activate &&
 
-.PHONY: setup run lint format test build coverage
+.PHONY: setup run lint format test build
 
 setup:
 	test -d $(VENV_DIR) || python3 -m venv $(VENV_DIR)

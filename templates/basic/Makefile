@@ -5,7 +5,6 @@ SHELL:=/usr/bin/bash
 
 PROJECT_NAME:=project
 VENV_DIR:=.venv
-ACTIVATE:=source .venv/bin/activate &&
 
 .PHONY: setup run lint format test build
 
